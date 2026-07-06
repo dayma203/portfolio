@@ -1,0 +1,60 @@
+---
+import '@fontsource-variable/archivo';
+import '@fontsource-variable/public-sans';
+import '@fontsource/ibm-plex-mono/400.css';
+import '@fontsource/ibm-plex-mono/500.css';
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+const { title, description = 'Dayton Massey — process engineer, designer of custom site furniture, photographer.' } = Astro.props;
+const path = Astro.url.pathname;
+const current = (p: string) => (path === p || (p !== '/' && path.startsWith(p)) ? 'page' : undefined);
+const year = new Date().getFullYear();
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="wrap">
+        <a class="site-mark" href="/">Dayton Massey</a>
+        <nav class="site-nav" aria-label="Main">
+          <a href="/projects/" aria-current={current('/projects')}>Projects</a>
+          <a href="/photography/" aria-current={current('/photography')}>Photography</a>
+          <a href="/blog/" aria-current={current('/blog')}>Blog</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <slot />
+    </main>
+
+    <footer class="site-footer">
+      <div class="wrap">
+        <div class="titleblock">
+          <div>
+            <div class="tb-label">Drawn by</div>
+            <div class="tb-value">Dayton Massey · Columbus, OH</div>
+          </div>
+          <div>
+            <div class="tb-label">Contact</div>
+            <div class="tb-value"><a href="mailto:dayton.r.massey@outlook.com">dayton.r.massey@outlook.com</a></div>
+          </div>
+          <div>
+            <div class="tb-label">Rev</div>
+            <div class="tb-value">{year} — all work my own</div>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
