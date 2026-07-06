@@ -1,0 +1,49 @@
+---
+import Base from '../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+
+const photos = (await getCollection('photos'))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+---
+<Base title="Photography — Dayton Massey">
+  <section class="section">
+    <div class="wrap">
+      <p class="eyebrow">Off the clock</p>
+      <h1>Photography</h1>
+      <div class="photo-grid" style="margin-top:2rem;">
+        {photos.map((p) => (
+          <button
+            type="button"
+            data-full={p.data.image}
+            data-caption={p.data.caption ?? p.data.title}
+            aria-label={`View ${p.data.title}`}
+          >
+            <img src={p.data.image} alt={p.data.title} loading="lazy" />
+          </button>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <dialog class="lightbox">
+    <figure style="margin:0;">
+      <img src="" alt="" />
+      <figcaption></figcaption>
+    </figure>
+  </dialog>
+
+  <script>
+    const dialog = document.querySelector('dialog.lightbox') as HTMLDialogElement;
+    const img = dialog.querySelector('img') as HTMLImageElement;
+    const cap = dialog.querySelector('figcaption') as HTMLElement;
+    document.querySelectorAll<HTMLButtonElement>('.photo-grid button').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        img.src = btn.dataset.full ?? '';
+        img.alt = btn.dataset.caption ?? '';
+        cap.textContent = btn.dataset.caption ?? '';
+        dialog.showModal();
+      });
+    });
+    dialog.addEventListener('click', () => dialog.close());
+  </script>
+</Base>
