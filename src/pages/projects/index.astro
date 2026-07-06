@@ -1,0 +1,48 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+import settings from '../../content/settings/projects.json';
+
+const projects = (await getCollection('projects', (p) => p.data.visible))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+---
+<Base title="Projects — Dayton Massey">
+  <section class="section">
+    <div class="wrap">
+      <p class="eyebrow">Field & shop</p>
+      <h1>Projects</h1>
+      <p class="lede" style="max-width:54ch; color:var(--muted);">
+        {settings.blurb}
+      </p>
+    </div>
+  </section>
+
+  {settings.carousel.length > 0 && (
+    <section class="section">
+      <div class="wrap">
+        <div class="carousel" tabindex="0" aria-label="Project photo highlights">
+          {settings.carousel.map((item) => (
+            <img src={item.image} alt={item.alt ?? 'Project photo'} loading="lazy" />
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <section class="section">
+    <div class="wrap">
+      <div class="grid-3">
+        {projects.map((p, i) => (
+          <a class="card" href={`/projects/${p.id}/`}>
+            <img src={p.data.cover} alt={p.data.title} loading="lazy" />
+            <div class="card-block">
+              <div class="card-no">PRJ-{String(i + 1).padStart(3, '0')}</div>
+              <h3>{p.data.title}</h3>
+              <p>{p.data.summary}</p>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+</Base>
