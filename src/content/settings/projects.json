@@ -1,0 +1,8 @@
+{
+  "blurb": "Custom site amenity work — engineered in SolidWorks, fabricated in steel and aluminum, installed in public spaces. A few favorites below.",
+  "carousel": [
+    { "image": "/uploads/placeholder-wide-1.svg", "alt": "Replace me in Site settings → Projects page" },
+    { "image": "/uploads/placeholder-wide-2.svg", "alt": "Replace me in Site settings → Projects page" },
+    { "image": "/uploads/placeholder-wide-3.svg", "alt": "Replace me in Site settings → Projects page" }
+  ]
+}
