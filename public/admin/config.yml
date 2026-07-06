@@ -1,0 +1,87 @@
+# ── Decap CMS configuration ─────────────────────────────────
+# ACTION REQUIRED before first login:
+#   1. Replace YOUR_GITHUB_USERNAME/YOUR_REPO below with your repo
+#      (example: daytonmassey/portfolio)
+#   2. Follow README "Admin login" steps to set up GitHub OAuth
+backend:
+  name: github
+  repo: dayma203/portfolio
+  branch: main
+
+# Uncomment while editing locally with `npx decap-server`:
+# local_backend: true
+
+media_folder: "public/uploads"
+public_folder: "/uploads"
+
+site_url: /
+display_url: /
+
+collections:
+  # ── Projects: 3-wide grid, each can be toggled on/off ──────
+  - name: projects
+    label: "Projects"
+    label_singular: "Project"
+    folder: "src/content/projects"
+    create: true
+    slug: "{{slug}}"
+    summary: "{{title}} — {{visible}}"
+    fields:
+      - { label: "Show on site", name: visible, widget: boolean, default: true, hint: "Turn off to hide this project without deleting it." }
+      - { label: "Title", name: title, widget: string }
+      - { label: "Date", name: date, widget: datetime }
+      - { label: "Cover photo", name: cover, widget: image }
+      - { label: "One-line summary", name: summary, widget: string, hint: "Shown on the project card." }
+      - { label: "Gallery", name: gallery, widget: list, field: { label: "Image", name: image, widget: image }, required: false }
+      - { label: "Write-up", name: body, widget: markdown }
+
+  # ── Blog ────────────────────────────────────────────────────
+  - name: blog
+    label: "Blog posts"
+    label_singular: "Post"
+    folder: "src/content/blog"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    fields:
+      - { label: "Draft", name: draft, widget: boolean, default: false, hint: "Drafts never appear on the site." }
+      - { label: "Title", name: title, widget: string }
+      - { label: "Date", name: date, widget: datetime }
+      - { label: "Tags", name: tags, widget: list, required: false }
+      - { label: "Body", name: body, widget: markdown }
+
+  # ── Photography: one entry per photo ────────────────────────
+  - name: photos
+    label: "Photography"
+    label_singular: "Photo"
+    folder: "src/content/photos"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Title", name: title, widget: string }
+      - { label: "Date", name: date, widget: datetime }
+      - { label: "Photo", name: image, widget: image }
+      - { label: "Caption", name: caption, widget: string, required: false }
+
+  # ── Site settings: homepage intro + projects carousel ───────
+  - name: settings
+    label: "Site settings"
+    files:
+      - name: home
+        label: "Homepage"
+        file: "src/content/settings/home.json"
+        fields:
+          - { label: "Eyebrow line", name: eyebrow, widget: string, hint: "Small label above your name." }
+          - { label: "Headline", name: headline, widget: string }
+          - { label: "Intro paragraph", name: intro, widget: text }
+      - name: projects_page
+        label: "Projects page"
+        file: "src/content/settings/projects.json"
+        fields:
+          - { label: "Intro blurb", name: blurb, widget: text }
+          - label: "Top carousel"
+            name: carousel
+            widget: list
+            hint: "Your best photos, in order. Add or remove freely."
+            fields:
+              - { label: "Image", name: image, widget: image }
+              - { label: "Alt text", name: alt, widget: string, required: false }
